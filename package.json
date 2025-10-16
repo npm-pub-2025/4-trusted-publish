@@ -1,6 +1,6 @@
 {
   "name": "@npmpub2025/trusted-publish",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A test package to demonstrate ci publishing with trusted publishing",
   "license": "ISC",
   "author": "Wes Todd <wes@wesleytodd.com>",
