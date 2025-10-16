@@ -1,0 +1,42 @@
+name: Publish
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version type to release'
+        required: true
+        type: string
+        default: patch
+      tag:
+        description: 'The dist-tag to release on'
+        required: true
+        type: string
+        default: latest
+permissions:
+  contents: write
+jobs:
+  publish:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    environment: publish
+    steps:
+      - uses: actions/checkout@v5
+      - name: setup git user
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+          registry-url: 'https://registry.npmjs.com'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: npm test
+        run: npm test
+      - name: npm version
+        run: npm version "${{ inputs.version }}"
+      - name: npm publish
+        run: npm publish --access=public --tag="${{ inputs.tag }}"
+      - name: git push
+        run: git push origin --follow-tags
