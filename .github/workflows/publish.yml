@@ -33,9 +33,7 @@ jobs:
         run: npm i -g npm@latest
       - name: npm test
         run: npm test
-      - name: npm version
-        run: npm version "${{ inputs.version }}"
       - name: npm publish
-        run: npm publish --loglevel=silly --access=public --tag="${{ inputs.tag }}" --provenance=false
+        run: npm publish --access=public --tag="${{ inputs.tag }}" --provenance=false
       - name: git push
         run: git push origin --follow-tags
